@@ -11,7 +11,79 @@ const SectionState = (props) => {
         movies: [
             {
                 id: "1",
-                name: "Movie 1",
+                name: "Movie sdfisdjlkg 1",
+                describe: "",
+                isEnd: false,
+            },
+            {
+                id: "2",
+                name: "Movie .v,mx.b,;'1 2",
+                describe: "",
+                isEnd: false,
+            },
+            {
+                id: "3",
+                name: "Movie 3",
+                describe: "",
+                isEnd: false,
+            },
+            {
+                id: "4",
+                name: "Movie sd;kv;vob[pcvob] 4",
+                describe: "",
+                isEnd: false,
+            },
+            {
+                id: "5",
+                name: "Movie .v,mx.b,;'1 5",
+                describe: "",
+                isEnd: false,
+            },
+            {
+                id: "6",
+                name: "Movie 6",
+                describe: "",
+                isEnd: false,
+            },
+            {
+                id: "7",
+                name: "Movie sd;kv;vob[pcvob] 7",
+                describe: "",
+                isEnd: false,
+            },
+            {
+                id: "8",
+                name: "Movie 6",
+                describe: "",
+                isEnd: false,
+            },
+            {
+                id: "9",
+                name: "Movie sd;kv;vob[pcvob] 7",
+                describe: "",
+                isEnd: false,
+            },
+            {
+                id: "10",
+                name: "Movie 6",
+                describe: "",
+                isEnd: false,
+            },
+            {
+                id: "11",
+                name: "Movie sd;kv;vob[pcvob] 7",
+                describe: "",
+                isEnd: false,
+            },
+            {
+                id: "12",
+                name: "Movie 6",
+                describe: "",
+                isEnd: false,
+            },
+            {
+                id: "13",
+                name: "Movie sd;kv;vob[pcvob] 7",
                 describe: "",
                 isEnd: false,
             }

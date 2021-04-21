@@ -1,17 +1,22 @@
 import React from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
+import { useEffect } from "react/cjs/react.development";
 import { Theme } from "../Theme/Theme";
 import AppText from "./../UI/AppText";
+import UserContext from "./../context/user/UserContext";
+import { useContext } from "react";
 
 const Link = (props) => {
     const { info, navigation } = props;
+    const { loginUser } = useContext(UserContext);
 
     const setListScreen = () => {
-        navigation.push("List", {listType: info.type, title: info.name});
+        loginUser();
+        //navigation.push("List", {listType: info.type, title: info.name});
     }
 
     return(
-        <TouchableOpacity style={styles.buttonWrapper} onPress={setListScreen}>
+        <TouchableOpacity style={styles.buttonWrapper} onPress={setListScreen} activeOpacity={0.7}>
             <View style={styles.button}>
                 <AppText style={styles.buttonText}>{info.title}</AppText>
             </View>

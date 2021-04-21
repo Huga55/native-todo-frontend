@@ -2,6 +2,7 @@ import React from "react";
 import { useReducer } from "react";
 import UserContext from "./UserContext";
 import userReducer from "./userReducer";
+import { userAPI } from "./../../api/API";
 
 const UserState = (props) => {
     const { children } = props;
@@ -14,8 +15,9 @@ const UserState = (props) => {
 
     const [state, dispatch] = useReducer(userReducer, initialState);
 
-    const loginUser = () => {
-        return dispatch({type: SET_USER_DATA, data});
+    const loginUser = async () => {
+        userAPI.login("asd@mail.ru", "asdasd");
+        //return dispatch({type: SET_USER_DATA, data});
     }
 
     const logoutUser = () => {

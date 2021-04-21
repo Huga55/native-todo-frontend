@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { useContext } from "react";
-import { View, StyleSheet, TouchableOpacity, Modal } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Modal, Alert } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { useEffect } from "react/cjs/react.development";
 import ListElem from "../components/ListElem";
@@ -11,6 +11,7 @@ import Empty from "../UI/Empty";
 import RandomModal from "./../components/Modal/RandomModal";
 
 const ListScreen = (props) => {
+    const [isReady, setIsReady] = useState(false);
     const [modal, setModal] = useState(false);
     const contextData = useContext(SectionContext);
 
@@ -20,7 +21,26 @@ const ListScreen = (props) => {
 
     useEffect(() => {
         navigation.setOptions({title: `Список ${title}`});
+        setIsReady(true);
     }, []);
+
+    const getModalHandler = () => {
+        if(contextData[listType].length >= 4) {
+            setModal(true);
+        }else {
+            Alert.alert(
+                "Ошибка :-|",
+                "Нужно не менее 4х элементов",
+                [
+                  { text: "OK" }
+                ]
+            );
+        }
+    }
+    
+    if(!isReady) {
+        return <View><AppText>Loading...</AppText></View>
+    }
 
     return(
         <>
@@ -28,11 +48,11 @@ const ListScreen = (props) => {
                 animationType="slide"
                 transparent={false}
                 visible={modal}
-            ><RandomModal items={contextData[listType]} /></Modal>
+            ><RandomModal items={contextData[listType]} close={() => setModal(false)} /></Modal>
             <View style={ [styles.wrapper, !needRandom? {marginTop: 20} : ""] }>
                 {
                     needRandom &&
-                    <TouchableOpacity style={styles.button} onPress={() => setModal(true)}>
+                    <TouchableOpacity style={styles.button} onPress={getModalHandler}>
                         <AppText style={styles.buttonText}>
                             Случайный выбор
                         </AppText>

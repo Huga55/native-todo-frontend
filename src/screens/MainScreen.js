@@ -1,5 +1,6 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
+import { useEffect } from "react/cjs/react.development";
 import Link from "../components/Link";
 import Author from "../UI/Author";
 import Container from "./../UI/Container";
