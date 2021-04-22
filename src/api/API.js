@@ -1,19 +1,41 @@
+import useHttp from "./../hooks/useHttp";
+
 export const userAPI = {
-    login: async (email, password) => {
-        try {
-            console.log(123);
-            const responseJSON = await fetch("https://localhost:5000/auth/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({email, password})
-            });
-            console.log("responseJSON", responseJSON)
-            const response = await responseJSON.json();
-            console.log("response", response);
-        } catch(e) {
-            console.log("error", e);
-        }
+    login: (email, password) => {
+        return useHttp("auth/login", "POST", false, {email, password});
     },
+
+    register: (email, password) => {
+        return useHttp("auth/register", "POST", false, {email, password});
+    },
+
+    check: () => {
+        return useHttp("auth/check", "GET", true);
+    },
+
+    logout: () => {
+        return useHttp("auth/logout", "PUT", true);
+    }
+}
+
+export const sectionAPI = {
+    getAll: () => {
+        return useHttp("section", "GET", true);
+    },
+
+    getOne: (type, id) => {
+        return useHttp(`section/${type}/${id}`, "GET", true);
+    },
+
+    delete: (type, id) => {
+        return useHttp(`section/${type}/${id}`, "DELETE", true);
+    },
+
+    create: (type, name, description) => {
+        return useHttp(`section/${type}`, "POST", true, {name, description});
+    },
+
+    change: (type, id, name, description) => {
+        return useHttp(`section/${type}/${id}`, "PUT", true, {name, description});
+    }
 }
