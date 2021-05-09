@@ -21,6 +21,10 @@ const headerStyle = {
 
 const headerTintColor = Platform.OS === "android"? Theme.TEXT_COLOR : Theme.MAIN_COLOR;
 
+const myTheme = {
+    
+}
+
 const NavigationWrapper = () => {
     return(
         <NavigationContainer>

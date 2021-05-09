@@ -8,7 +8,6 @@ import IconButton from "../components/IconButton";
 import { useContext } from "react";
 import SectionContext from "../context/section/SectionContext";
 import Empty from "../UI/Empty";
-import { useEffect } from "react/cjs/react.development";
 
 const InfoScreen = (props) => {
     const { deleteOneAction, ...sectionData } = useContext(SectionContext);
@@ -29,7 +28,7 @@ const InfoScreen = (props) => {
               },
               { text: "OK", onPress: () => {
                   navigation.goBack();
-                  deleteOneAction(id, listType);
+                  deleteOneAction(listType, id);
               }}
             ]
         );
@@ -52,7 +51,7 @@ const InfoScreen = (props) => {
             {
                 section.describe !== ""?
                 <AppText style={styles.description}>
-                    {section.describe}
+                    {section.description}
                 </AppText> : <Empty />
             }
         </ScrollView>

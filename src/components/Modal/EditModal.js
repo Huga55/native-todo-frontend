@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import { View, StyleSheet, TextInput, Keyboard, TouchableWithoutFeedback, Alert } from "react-native";
+import UserContext from "../../context/user/UserContext";
 import ModalContext from "./../../context/modal/ModalContext";
 import SectionContext from "./../../context/section/SectionContext";
 import { Theme } from "./../../Theme/Theme";
@@ -9,11 +10,11 @@ import AppButton from "./../AppButton";
 const EditModal = () => {
     const { deleteModalAction, modalType, sectionType, editId } = useContext(ModalContext);
     const { setOneAction, changeOneAction, ...otherSectionProps } = useContext(SectionContext);
+    const { limit } = useContext(UserContext);
 
     const activeSection = editId && otherSectionProps[sectionType].find(s => s.id === editId);
-
     const [nameInput, setNameInput] = useState(activeSection? activeSection.name : "");
-    const [describeInput, setDescribeInput] = useState(activeSection? activeSection.describe : "");
+    const [describeInput, setDescribeInput] = useState(activeSection? activeSection.description : "");
     const [describeLength, setDescribeLength] = useState(0);
 
     const describeHandler = (e) => {
@@ -24,20 +25,28 @@ const EditModal = () => {
     const submitHundler = () => {
         if(nameInput.trim() !== "") {
             if(modalType === "create") {
-                setOneAction({id: Date.now().toString(), name: nameInput, describe: describeInput, isEnd: false}, sectionType);
+                if(otherSectionProps[sectionType].length < limit) {
+                    setOneAction(sectionType, {name: nameInput, description: describeInput});
+                }else {
+                    getError("К сожалению лимит превышен :(");
+                }   
             }else {
-                changeOneAction({id: activeSection.id, name: nameInput, describe: describeInput, isEnd: false}, sectionType);
+                changeOneAction(sectionType, {id: activeSection.id, name: nameInput, description: describeInput});
             }   
             deleteModalAction();
         }else {
-            Alert.alert(
-                "Ошибка :-(",
-                "Поле с названием должно быть заполнено",
-                [
-                  { text: "OK" }
-                ]
-              );
+            getError("Поле с названием должно быть заполнено");
         }
+    }
+
+    const getError = (text) => {
+        Alert.alert(
+            "Ошибка :-(",
+            text,
+            [
+              { text: "OK" }
+            ]
+        );
     }
 
     return(

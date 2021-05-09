@@ -3,11 +3,11 @@ import { TouchableOpacity, StyleSheet } from "react-native";
 import AppText from "./../UI/AppText";
 
 const AppButton = (props) => {
-    const { children, style, ...otherProps } = props;
+    const { children, style, styleText, ...otherProps } = props;
 
     return(
         <TouchableOpacity activeOpacity={0.7} style={ {...styles.button, ...style} } {...otherProps}>
-            <AppText>
+            <AppText style={ {...styleText} }>
                 {children}
             </AppText>
         </TouchableOpacity>

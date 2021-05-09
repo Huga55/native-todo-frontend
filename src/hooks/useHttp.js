@@ -1,50 +1,62 @@
-import { useEffect, useState } from "react";
-import {SecureStore} from 'expo';
+import { useContext } from "react";
+import AppContext from "./../context/app/AppContext";
+import * as SecureStore from 'expo-secure-store';
 
-const useHttp = (endpoint, type, needToken, data = null, headers = {}) => {
-    const [responseData, setResponseData] = useState(null);
-    const [loader, setLoader] = useState(false);
-    const [error, setError] = useState(null);
+const useHttp = () => {
+    const { setGlobalError, setIsLoading, clearIsLoading } = useContext(AppContext);
 
-    const baseURL = "https://localhost:5000/";
+    const baseURL = "https://wimdev.ru/native-todo/";
 
-    useEffect(() => {
-        toRequest();
-    }, [])
-
-    const toRequest = async () => {
-        setLoader(true);
-
-        const token = await SecureStore.getItemAsync('secure_token');
-        let authorization = {};
-        if(token && needToken) {
-            authorization = {authorization: `Bearer ${token}`}
-        }
-
-        const responseJSON = await fetch(`${baseURL}${endpoint}`, {
-            method: type,
-            headers: {
-                "Content-Type": "application/json",
-                ...authorization,
-                ...headers
-            },
-            body: data,
-        });
-    
-        const response = await responseJSON.json();
-        
-        if(response.success) {
-            if(response.data.token) {
-                await SecureStore.setItemAsync('secure_token', response.data.token);
+    const request = async ({endpoint, method, needToken, data = {}, headers = {}}) => {
+        try {
+            setIsLoading();
+            const token = await SecureStore.getItemAsync('secure_token');
+            let authorization = {};
+            if(token && needToken) {
+                authorization = {authorization: `Bearer ${token}`}
             }
-            setResponseData(response.data);
-        }else {
-            setError(response.error);
-        }
 
-        setLoader(false);
+            let responseJSON;
+            console.log("data request", data)
+            if(method === "POST" || method === "PUT") {
+                responseJSON = await fetch(`${baseURL}${endpoint}`, {
+                    method,
+                    headers: {
+                        "Content-Type": "application/json",
+                        ...authorization,
+                        ...headers
+                    },
+                    body: JSON.stringify({...data}),
+                });
+            }else {
+                responseJSON = await fetch(`${baseURL}${endpoint}`, {
+                    method,
+                    headers: {
+                        "Content-Type": "application/json",
+                        ...authorization,
+                        ...headers
+                    },
+                });
+            }
+            
+            const status = responseJSON.status;
+            const response = await responseJSON.json();
+            console.log(response)
+            if(response.success) {
+                if(response.data && response.data.token) {
+                    await SecureStore.setItemAsync('secure_token', response.data.token);
+                }
+            }else {
+                setGlobalError(response.error);
+            }
+            clearIsLoading();
+            return {response, status}
+        } catch(error) {
+            clearIsLoading();
+            console.log("catched error", error)
+        }
     }
-    return {responseData, loader, error};
+    return {request};
 }
 
 export default useHttp;

@@ -1,5 +1,5 @@
 export const SET_USER_DATA = "SET_USER_DATA";
-export const DELET_USER_DATA = "UNSET_USER";
+export const DELETE_USER_DATA = "UNSET_USER";
 
 const userReducer = (state, action) => {
     switch(action.type) {
@@ -8,15 +8,16 @@ const userReducer = (state, action) => {
                 ...state,
                 email: action.data.email,
                 token: action.data.token,
+                limit: action.data.limit,
                 isAuth: true,
             }
-        case DELET_USER_DATA: 
+        case DELETE_USER_DATA: 
             return {
                 ...state,
-                id: null,
                 email: null,
                 token: null,
                 isAuth: false,
+                limit: null,
             } 
         default: return state;
     }

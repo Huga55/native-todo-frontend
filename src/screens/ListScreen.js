@@ -1,10 +1,11 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import { useContext } from "react";
 import { View, StyleSheet, TouchableOpacity, Modal, Alert } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { useEffect } from "react/cjs/react.development";
 import ListElem from "../components/ListElem";
 import SectionContext from "../context/section/SectionContext";
+import UserContext from "../context/user/UserContext";
 import { Theme } from "../Theme/Theme";
 import AppText from "../UI/AppText";
 import Empty from "../UI/Empty";
@@ -14,6 +15,7 @@ const ListScreen = (props) => {
     const [isReady, setIsReady] = useState(false);
     const [modal, setModal] = useState(false);
     const contextData = useContext(SectionContext);
+    const { limit } = useContext(UserContext);
 
     const { navigation, route } = props;
     const { listType, title } = route.params;
@@ -61,11 +63,17 @@ const ListScreen = (props) => {
             </View>
             {
                 contextData[listType].length > 0?
-                <FlatList
-                    data={contextData[listType]}
-                    renderItem={({item}) => <ListElem item={item} navigation={navigation} route={route}/>}
-                    keyExtractor={item => item.id}
-                /> : <Empty />
+                <>
+                    <View style={styles.countWrapper}>
+                        <AppText style={styles.count}>{contextData[listType].length} / {limit}</AppText>
+                    </View>
+                    <FlatList
+                        data={contextData[listType]}
+                        renderItem={({item}) => <ListElem item={item} navigation={navigation} route={route}/>}
+                        keyExtractor={item => item.id}
+                    /> 
+                </>
+                : <Empty />
             }
         </>
     );
@@ -87,6 +95,15 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: Theme.MAIN_COLOR,
     },
+    countWrapper: {
+        paddingBottom: 5,
+        paddingHorizontal: 20,
+        alignItems: "flex-end"
+    },
+    count: {
+        fontSize: 16,
+        color: Theme.MAIN_COLOR
+    }
 });
 
 export default ListScreen;
