@@ -1,5 +1,5 @@
 export const SET_USER_DATA = "SET_USER_DATA";
-export const DELETE_USER_DATA = "UNSET_USER";
+export const DELETE_USER_DATA = "DELETE_USER_DATA";
 
 const userReducer = (state, action) => {
     switch(action.type) {

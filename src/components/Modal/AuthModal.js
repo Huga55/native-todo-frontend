@@ -1,7 +1,5 @@
-import React from "react";
-import { useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { View, TouchableWithoutFeedback, StyleSheet, Keyboard, TextInput, Alert } from "react-native";
-import { useEffect, useState } from "react/cjs/react.development";
 import UserContext from "../../context/user/UserContext";
 import { Theme } from "../../Theme/Theme";
 import AppText from "../../UI/AppText";
@@ -10,12 +8,13 @@ import AppContext from "./../../context/app/AppContext";
 import Loader from "./../../components/Loader";
 
 const AuthModal = (props) => {
-    const { registerUser, loginUser, checkUser } = useContext(UserContext);
+    const { registerUser, loginUser, checkUser, rememberPassword } = useContext(UserContext);
     const { isLoading } = useContext(AppContext);
 
     const [emailInput, setEmailInput] = useState("");
     const [passwordInput, setPasswordInput] = useState("");
     const [type, setType] = useState("auth");
+    const [isRemember, setIsRemember] = useState(false);
 
     useEffect(() => {
         checkUser();
@@ -60,46 +59,102 @@ const AuthModal = (props) => {
         }
     }
 
+    const handleRemember = async () => {
+        const regExp = /.+@.+\..+/;
+        if(!emailInput.match(regExp)) {
+            getAlert("Некорректный email.");
+            return;
+        }
+        const response = await rememberPassword(emailInput);
+        if(response) {
+            setEmailInput("");
+            setIsRemember(false);
+        }
+    }
+
+    const changeRemember = () => {
+        setEmailInput("");
+        setPasswordInput("");
+        setIsRemember(!isRemember);
+    }
+
     return(
         <>
             {isLoading? <Loader /> : null}
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
                 <View style={styles.wrapper}>
-                    <View style={styles.title}>
-                        <AppText style={styles.titleText}>
-                            {type === "auth"? "Авторизация" : "Регистрация"}
-                        </AppText>
-                    </View>
-                    <View style={styles.emailWrapper}>
-                        <TextInput 
-                            style={styles.emailInput}
-                            value={emailInput}
-                            onChangeText={setEmailInput}
-                            maxLength={80}    
-                            placeholder="Email"
-                            keyboardType="email-address"
-                        />
-                    </View>
-                    <View style={styles.passWrapper}>
-                        <TextInput 
-                            style={styles.passInput}
-                            value={passwordInput}
-                            onChangeText={setPasswordInput}
-                            maxLength={40}    
-                            placeholder="Пароль"
-                            secureTextEntry={true}
-                        />
-                    </View>
-                    <View style={styles.buttonWrapper}>
-                        <AppButton style={styles.button} onPress={handleSubmit}>
-                            {type === "auth"? "Войти" : "Зарегистрироваться"}
-                        </AppButton>
-                    </View>
-                    <View style={styles.changeWrapper}>
-                        <AppButton style={styles.change} styleText={styles.changeText} onPress={changeType}>
-                            {type === "auth"? "Регистрация" : "Авторизация"}
-                        </AppButton>
-                    </View>
+                    {
+                        !isRemember?
+                        <>
+                            <View style={styles.title}>
+                                <AppText style={styles.titleText}>
+                                    {type === "auth"? "Авторизация" : "Регистрация"}
+                                </AppText>
+                            </View>
+                            <View style={styles.emailWrapper}>
+                                <TextInput 
+                                    style={styles.emailInput}
+                                    value={emailInput}
+                                    onChangeText={setEmailInput}
+                                    maxLength={80}    
+                                    placeholder="Email"
+                                    keyboardType="email-address"
+                                />
+                            </View>
+                            <View style={styles.passWrapper}>
+                                <TextInput 
+                                    style={styles.passInput}
+                                    value={passwordInput}
+                                    onChangeText={setPasswordInput}
+                                    maxLength={40}    
+                                    placeholder="Пароль"
+                                    secureTextEntry={true}
+                                />
+                            </View>
+                            <View style={styles.buttonWrapper}>
+                                <AppButton style={styles.button} onPress={handleSubmit}>
+                                    {type === "auth"? "Войти" : "Зарегистрироваться"}
+                                </AppButton>
+                            </View>
+                            <View style={styles.changeWrapper}>
+                                <AppButton style={styles.change} styleText={styles.changeText} onPress={changeType}>
+                                    {type === "auth"? "Регистрация" : "Авторизация"}
+                                </AppButton>
+                            </View>
+                            <View style={styles.rememberWrapper}>
+                                <AppButton style={styles.change} styleText={styles.changeText} onPress={changeRemember}>
+                                    Забыли пароль
+                                </AppButton>
+                            </View>
+                        </> :
+                        <>
+                            <View style={styles.title}>
+                                <AppText style={styles.titleText}>
+                                    Восстановление пароля
+                                </AppText>
+                            </View>
+                            <View style={styles.emailWrapper}>
+                                <TextInput 
+                                    style={styles.emailInput}
+                                    value={emailInput}
+                                    onChangeText={setEmailInput}
+                                    maxLength={80}    
+                                    placeholder="Email"
+                                    keyboardType="email-address"
+                                />
+                            </View>
+                            <View style={styles.buttonWrapper}>
+                                <AppButton style={styles.button} onPress={handleRemember}>
+                                    Восстановить
+                                </AppButton>
+                            </View>
+                            <View style={styles.changeWrapper}>
+                                <AppButton style={styles.change} styleText={styles.changeText} onPress={changeRemember}>
+                                    Авторизация
+                                </AppButton>
+                            </View>
+                        </>
+                    }
                 </View>
             </TouchableWithoutFeedback>
         </>
@@ -157,7 +212,11 @@ const styles = StyleSheet.create({
     },
     changeText: {
         color: Theme.MAIN_COLOR
-    }
+    },
+    rememberWrapper: {
+        height: 30,
+        alignItems: "center",
+    },
 });
 
 export default AuthModal;

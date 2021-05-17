@@ -1,9 +1,14 @@
 {
   "expo": {
     "entryPoint": "./App.js",
-    "name": "native-todo",
-    "slug": "native-todo",
+    "name": "Useful Lists",
+    "slug": "useful-lists-wimdev",
+    "privacy": "public",
     "version": "1.0.0",
+    "platforms": [
+      "android",
+      "ios"
+    ],
     "orientation": "default",
     "icon": "./assets/icon.png",
     "splash": {
@@ -18,16 +23,13 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.wimdev.useful-lists",
+      "buildNumber": "1.0.0"
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
+      "package": "com.wimdev.useful_lists",
+      "versionCode": 1
     }
   }
 }

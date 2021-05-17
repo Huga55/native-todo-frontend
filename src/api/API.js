@@ -17,13 +17,17 @@ export const userAPI = {
         return getObjectData("auth/register", "POST", false, {email, password});
     },
 
+    remember: (email) => {
+        return getObjectData("auth/remember", "PUT", false, {email});
+    },
+
     check: () => {
         return getObjectData("auth/check", "GET", true);
     },
 
     logout: () => {
         return getObjectData("auth/logout", "PUT", true);
-    }
+    },
 }
 
 export const sectionAPI = {

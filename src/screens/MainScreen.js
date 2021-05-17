@@ -1,5 +1,4 @@
-import React from "react";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { View, StyleSheet, Modal, Alert } from "react-native";
 import AppButton from "../components/AppButton";
 import Link from "../components/Link";

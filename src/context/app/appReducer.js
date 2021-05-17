@@ -18,7 +18,10 @@ const appReducer = (state, action) => {
         case SET_GLOBAL_ERROR:
             return {
                 ...state,
-                globalError: action.error,
+                globalError: {
+                    error: action.error,
+                    title: action.title,
+                },
             }
         case CLEAR_GLOBAL_ERROR: 
             return {

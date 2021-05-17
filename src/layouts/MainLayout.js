@@ -1,10 +1,9 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Modal, Alert } from "react-native";
 import NavigationWrapper from "./../navigation/NavigationWrapper";
 import EditModal from "./../components/Modal/EditModal";
 import ModalContext from "./../context/modal/ModalContext";
 import AppContext from "../context/app/AppContext";
-import { useEffect } from "react/cjs/react.development";
 import Loader from "../components/Loader";
 import UserContext from "../context/user/UserContext";
 import SectionContext from "../context/section/SectionContext";
@@ -18,8 +17,8 @@ const MainLayout = () => {
     useEffect(() => {
         if(globalError) {
             Alert.alert(
-                "Ой-ой.. :(",
-                globalError,
+                globalError.title? globalError.title : "Ой-ой.. :(",
+                globalError.error,
                 [
                   { text: "OK", onPress: () => clearGlobalError() }
                 ]

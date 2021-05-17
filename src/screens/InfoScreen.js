@@ -1,6 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Alert} from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import { View, StyleSheet, Alert, ScrollView} from "react-native";
 import AppText from "./../UI/AppText";
 import { MaterialIcons } from '@expo/vector-icons';
 import { Theme } from "../Theme/Theme";

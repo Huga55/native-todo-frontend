@@ -7,7 +7,7 @@ const useHttp = () => {
 
     const baseURL = "https://wimdev.ru/native-todo/";
 
-    const request = async ({endpoint, method, needToken, data = {}, headers = {}}) => {
+    const request = async ({endpoint, method, needToken, data = {}, headers = {}}, needShowError = true) => {
         try {
             setIsLoading();
             const token = await SecureStore.getItemAsync('secure_token');
@@ -17,7 +17,6 @@ const useHttp = () => {
             }
 
             let responseJSON;
-            console.log("data request", data)
             if(method === "POST" || method === "PUT") {
                 responseJSON = await fetch(`${baseURL}${endpoint}`, {
                     method,
@@ -38,22 +37,20 @@ const useHttp = () => {
                     },
                 });
             }
-            
             const status = responseJSON.status;
             const response = await responseJSON.json();
-            console.log(response)
             if(response.success) {
                 if(response.data && response.data.token) {
                     await SecureStore.setItemAsync('secure_token', response.data.token);
                 }
             }else {
-                setGlobalError(response.error);
+                if(needShowError) setGlobalError(response.error);
             }
             clearIsLoading();
             return {response, status}
         } catch(error) {
             clearIsLoading();
-            console.log("catched error", error)
+            //console.log("catched error", error)
         }
     }
     return {request};

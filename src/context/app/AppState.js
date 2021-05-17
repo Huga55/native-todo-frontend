@@ -14,7 +14,7 @@ const AppState = (props) => {
 
     const setIsLoading = () => dispatch({type: SET_IS_LOADING});
     const clearIsLoading = () => dispatch({type: CLEAR_IS_LOADING});
-    const setGlobalError = (error) => dispatch({type: SET_GLOBAL_ERROR, error});
+    const setGlobalError = (error, title = null) => dispatch({type: SET_GLOBAL_ERROR, error, title});
     const clearGlobalError = () => dispatch({type: CLEAR_GLOBAL_ERROR}); 
 
     return(

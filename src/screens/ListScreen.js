@@ -1,8 +1,5 @@
-import React, { useState } from "react";
-import { useContext } from "react";
-import { View, StyleSheet, TouchableOpacity, Modal, Alert } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
-import { useEffect } from "react/cjs/react.development";
+import React, { useState, useEffect, useContext } from "react";
+import { View, StyleSheet, TouchableOpacity, Modal, Alert, FlatList } from "react-native";
 import ListElem from "../components/ListElem";
 import SectionContext from "../context/section/SectionContext";
 import UserContext from "../context/user/UserContext";

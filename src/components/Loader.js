@@ -4,7 +4,6 @@ import AppText from "./../UI/AppText";
 import { AntDesign } from '@expo/vector-icons'; 
 
 const Loader = () => {
-    console.log("loader", true)
     return(
         <View style={styles.loader}>
             <ActivityIndicator size="large" color="#0000ff" />
